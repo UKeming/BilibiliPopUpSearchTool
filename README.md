@@ -20,5 +20,5 @@ command to start the search
 If you don't specify any parameters, the program will create 10 threads for searching, and search from videos from aid 0-1000000
 
 | Parameter | Explaination |Required|
-|:---|:----:|---:|
+|:---:|:----:|:---:|
 |   -s   |  specify the aid where the search will start|no |
