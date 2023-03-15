@@ -91,8 +91,7 @@ def get_data(i):
                                     }
                                     id += 1
                         if len(contents.items()) > 0:
-                            result_dict['link'] = link
-                            new_result['link'] = link
+                            contents['link'] = link
 
                             result_dict[aid[i]] = contents
                             new_result[aid[i]] = contents
