@@ -1,5 +1,8 @@
 # BilibiliPopUpSearchTool - Bilibili 弹幕搜索工具 0.1
 
+## Description
+A widget to search for videos by pop-up content
+
 ## Usage
 After downloading the search.py file, run
 ```
@@ -17,7 +20,7 @@ python ./search.py --new
 command to start a new search
 
 ## Parameters
-If you don't specify any parameters, the program will create 10 threads for searching, and search from videos from aid 0-1000000
+If you don't specify any parameters, the program will create 10 threads for searching, and search keywords from videos from aid 0-1000000
 
 | Parameter | Explaination |Required|Default Value|
 |:----:|:----:|:----:|:----:|
