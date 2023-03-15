@@ -27,7 +27,7 @@ If you don't specify any parameters, the program will create 10 threads for sear
 |   -s   |  the aid where the search will start from|no | 0 |
 |   -c   |  the number of videos from aid [-s] to be searched|no |1000000 |
 |   -t   |  the number of threads used for search |no|10 |
-|  --new | if you specify this parameter, a new search will start, and previous search history will be discarded |no|False|
+|  --new | if you specify this parameter, a new search will start, and previous search history will be discarded(results will be kept) |no|False|
 
 - Additional Info
   - The program will save all search results to results.json.
