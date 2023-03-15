@@ -18,7 +18,6 @@ fail = []
 total = []
 goal = []
 start = []
-finished_total = 0
 threads = []
 result_dict = {}
 headers = {
@@ -52,57 +51,62 @@ def av2bv(x):
 
 def get_data(i):
     ##url = "https://comment.bilibili.com/" + str(oid[id]) + ".xml";
-    global finished_total
     while aid[i] <= goal[i]:
         bvid = av2bv(aid[i])
-        if bvid:
-            cid = bvid_to_cid(bvid, i)
-            if cid:
-                url = "https://comment.bilibili.com/" + str(cid) + ".xml"
-                # 发送请求
-                try:
-                    res = requests.get(url=url, headers=headers)
-                    # 设置编码格式
-                    s = res.text
-                    # s.encoding='utf-8'
-
-                    selector = etree.HTML(s.encode("utf-8"))
-                    # 查看返回值。返回值200表明连接正常
-
-                    if str(type(selector)) == '<class \'lxml.etree._Element\'>':
-                        for item in selector.xpath('.'):
-                            ss = item.xpath('.//d/text()')
-                            tags = item.xpath('.//d/@p')
-                        link = 'http://bilibili.com/video/av' + str(
-                            aid[i])
-                        id = 0
-                        # 进行解码和打印输出
-                        contents = {}
-                        for i2 in range(len(ss)):
-                            string = ss[i2].encode('raw_unicode_escape').decode()
-                            for name in keyword_list:
-                                if name in string:
-                                    min = int(float(tags[i2].split(',')[0]) / 60)
-                                    sec = int(float(tags[i2].split(',')[0])) % 60
-                                    time = str(min) + '分' + str(sec) + '秒'
-                                    contents[id] = {
-                                        "content": string,
-                                        "time": time,
-                                    }
-                                    id += 1
-                        if len(contents.items()) > 0:
-                            contents['link'] = link
-
-                            result_dict[aid[i]] = contents
-                            new_result[aid[i]] = contents
-
-                except:
-                    aid[i] -= 1
-            else:
-                fail[i] += 1
+        if not bvid:
+            fail[i] += 1
             total[i] += 1
+            aid[i] += 1
+            continue
+
+        cid = bvid_to_cid(bvid)
+        if not cid:
+            fail[i] += 1
+            total[i] += 1
+            aid[i] += 1
+            continue
+        url = "https://comment.bilibili.com/" + str(cid) + ".xml"
+        # 发送请求
+        try:
+            res = requests.get(url=url, headers=headers)
+            # 设置编码格式
+            s = res.text
+            # s.encoding='utf-8'
+
+            selector = etree.HTML(s.encode("utf-8"))
+            # 查看返回值。返回值200表明连接正常
+
+            if str(type(selector)) == '<class \'lxml.etree._Element\'>':
+                for item in selector.xpath('.'):
+                    ss = item.xpath('.//d/text()')
+                    tags = item.xpath('.//d/@p')
+                link = 'http://bilibili.com/video/av' + str(
+                    aid[i])
+                id = 0
+                # 进行解码和打印输出
+                contents = {}
+                for i2 in range(len(ss)):
+                    string = ss[i2].encode('raw_unicode_escape').decode()
+                    for name in keyword_list:
+                        if name in string:
+                            min = int(float(tags[i2].split(',')[0]) / 60)
+                            sec = int(float(tags[i2].split(',')[0])) % 60
+                            time = str(min) + '分' + str(sec) + '秒'
+                            contents[id] = {
+                                "content": string,
+                                "time": time,
+                            }
+                            id += 1
+                if len(contents.items()) > 0:
+                    contents['link'] = link
+
+                    result_dict[aid[i]] = contents
+                    new_result[aid[i]] = contents
+        except:
+            aid[i] -= 1
+            continue
+        total[i] += 1
         aid[i] += 1
-        finished_total += 1
 
 
 def save_progress():
@@ -143,19 +147,17 @@ def aid_to_bvid(aid):
     if data:
         bvid = data["bvid"]
         return bvid
-    return ""
+    return
 
 
-def bvid_to_cid(bvid, i):
+def bvid_to_cid(bvid):
     url = "https://api.bilibili.com/x/player/pagelist?bvid=" + bvid + "&jsonp=jsonp"
-    try:
-        res = requests.get(url=url, headers=headers)
-        dictory = json.loads(res.text)
-        if "data" in dictory:
-            data = dictory["data"][0]
-            return data["cid"]
-    except:
-        return
+    res = requests.get(url=url, headers=headers)
+    dictory = json.loads(res.text)
+    if "data" in dictory:
+        data = dictory["data"][0]
+        return data["cid"]
+    return
 
 
 def create_thread_file(thread_count, total_data, start_point):
