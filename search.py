@@ -140,24 +140,30 @@ def save_progress():
 
 # Press the green button in the gutter to run the script.
 def aid_to_bvid(aid):
-    url = "http://api.bilibili.com/x/web-interface/archive/stat?aid=" + str(aid)
-    res = requests.get(url=url, headers=headers)
-    json_dict = json.loads(res.text)
-    data = json_dict["data"]
-    if data:
-        bvid = data["bvid"]
-        return bvid
-    return
+    try:
+        url = "http://api.bilibili.com/x/web-interface/archive/stat?aid=" + str(aid)
+        res = requests.get(url=url, headers=headers)
+        json_dict = json.loads(res.text)
+        data = json_dict["data"]
+        if data:
+            bvid = data["bvid"]
+            return bvid
+        return
+    except:
+        return
 
 
 def bvid_to_cid(bvid):
-    url = "https://api.bilibili.com/x/player/pagelist?bvid=" + bvid + "&jsonp=jsonp"
-    res = requests.get(url=url, headers=headers)
-    dictory = json.loads(res.text)
-    if "data" in dictory:
-        data = dictory["data"][0]
-        return data["cid"]
-    return
+    try:
+        url = "https://api.bilibili.com/x/player/pagelist?bvid=" + bvid + "&jsonp=jsonp"
+        res = requests.get(url=url, headers=headers)
+        dictory = json.loads(res.text)
+        if "data" in dictory:
+            data = dictory["data"][0]
+            return data["cid"]
+        return
+    except:
+        return
 
 
 def create_thread_file(thread_count, total_data, start_point):
