@@ -53,12 +53,6 @@ def get_data(i):
     ##url = "https://comment.bilibili.com/" + str(oid[id]) + ".xml";
     while aid[i] <= goal[i]:
         bvid = av2bv(aid[i])
-        if not bvid:
-            fail[i] += 1
-            total[i] += 1
-            aid[i] += 1
-            continue
-
         cid = bvid_to_cid(bvid)
         if not cid:
             fail[i] += 1
