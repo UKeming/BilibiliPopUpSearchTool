@@ -1,9 +1,6 @@
 # BilibiliPopUpSearchTool - Bilibili 弹幕搜索工具 0.1
 
-## Install - 安装
-
-
-## Usage - 使用
+## Usage
 After downloading the search.py file, run
 ```
 pip install lxml
@@ -11,20 +8,16 @@ pip install requests
 ```
 to install dependencies.
 
-Then, run
+Then, create a *keywords.txt* file and add the keywords you want to search for.
+
+Finally, run
 ```
 python ./search.py
 ```
 command to start the search
 
+## Parameters
+If you don't specify any parameters, the program will create 10 threads for searching, and search from videos from aid 0-1000000
 
-  - File Structure - 文件结构说明
-    - keywords.txt
-    - thread_tracker.json (Automatically Generated)
-    - results.json (Automatically Generated)
-    - search.py
-
-
-
-
-# BilibiliPopUpSearchTool
+| Parameter | Explaination |Required|
+|   -s   |  specify the aid where the search will start|no |
