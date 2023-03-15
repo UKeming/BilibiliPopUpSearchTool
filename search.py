@@ -103,7 +103,6 @@ def get_data(i):
                     result_dict[aid[i]] = contents
                     new_result[aid[i]] = contents
         except:
-            aid[i] -= 1
             continue
         total[i] += 1
         aid[i] += 1
