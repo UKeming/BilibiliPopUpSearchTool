@@ -6,7 +6,14 @@
 ## Usage - 使用
 After downloading the search.py file, run
 ```
-./search.py
+pip install lxml
+pip install requests
+```
+to install dependencies.
+
+Then, run
+```
+python ./search.py
 ```
 command to start the search
 
