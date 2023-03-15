@@ -58,7 +58,7 @@ def get_data(i):
         if bvid:
             cid = bvid_to_cid(bvid, i)
             if cid:
-                url = "https://comment.bilibili.com/" + str(cid) + ".xml";
+                url = "https://comment.bilibili.com/" + str(cid) + ".xml"
                 # 发送请求
                 try:
                     res = requests.get(url=url, headers=headers)
@@ -75,7 +75,9 @@ def get_data(i):
                             tags = item.xpath('.//d/@p')
                         link = 'http://bilibili.com/video/av' + str(
                             aid[i])
+                        id = 0
                         # 进行解码和打印输出
+                        contents = {}
                         for i2 in range(len(ss)):
                             string = ss[i2].encode('raw_unicode_escape').decode()
                             for name in keyword_list:
@@ -83,13 +85,15 @@ def get_data(i):
                                     min = int(float(tags[i2].split(',')[0]) / 60)
                                     sec = int(float(tags[i2].split(',')[0])) % 60
                                     time = str(min) + '分' + str(sec) + '秒'
-                                    found = {
+                                    contents[id] = {
                                         "content": string,
                                         "time": time,
                                         "link": link
                                     }
-                                    result_dict[aid[i]] = found
-                                    new_result[aid[i]] = found
+                                    id += 1
+                        if len(contents.items()) > 0:
+                            result_dict[aid[i]] = contents
+                            new_result[aid[i]] = contents
 
                 except:
                     aid[i] -= 1
@@ -125,7 +129,7 @@ def save_progress():
 
         cls()
 
-        if print_progress() > 100:
+        if print_progress() >= 100:
             break
 
 
@@ -196,11 +200,11 @@ def read_keywords_file():
 
 def read_results_file():
     global result_dict
-    with open(result_file_path, 'r') as f:
-        try:
+    if os.path.exists(result_file_path):
+        with open(result_file_path, 'r') as f:
             result_dict = json.load(f)
-        except:
-            result_dict = {}
+    else:
+        result_dict = {}
 
 
 def main():
@@ -231,12 +235,10 @@ def main():
 
     threads.append(threading.Thread(target=save_progress, ))
     threads[len(aid)].start()
-    cls()
-    print_progress()
 
 
 def cls():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    print('\n' * 100)
 
 
 def print_progress():
@@ -249,10 +251,10 @@ def print_progress():
             print(" ", end="")
 
         print("|", progress, "%", end=" ")
-        print(aid[i], "/", goal[i], end=", ")
+        print(aid[i] - 1, "/", goal[i], end=", ")
         print("miss rate:", "null" if total[i] == 0 else fail[i] / total[i])
 
-    sum_aid = sum([aid[i] - start[i] for i in range(len(aid))])
+    sum_aid = sum([aid[i] - 1 - start[i] for i in range(len(aid))])
     overall_progress = (sum_aid / (block_size * len(aid))) * 100
     print("overall:", overall_progress, "%")
     return overall_progress
