@@ -4,11 +4,19 @@
 
 
 ## Usage - 使用
+After downloading the search.py file, run
+```
+./search.py
+```
+command to start the search
+
+
   - File Structure - 文件结构说明
     - keywords.txt
-    - thread_tracker.json
-    - results.json
+    - thread_tracker.json (Automatically Generated)
+    - results.json (Automatically Generated)
     - search.py
+
 
 
 
