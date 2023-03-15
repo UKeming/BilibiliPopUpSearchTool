@@ -26,9 +26,9 @@ If you don't specify any parameters, the program will create 10 threads for sear
 |   -t   |  the number of threads used for search |no|10 |
 |  --new | if you specify this parameter, a new search will start, and previous search history will be discarded |no|False|
 
--Additional Info
-  -The program will save all search results to results.json.
-  -When a search is interrupted, it can be continued when you run the program again without --new command.
-  -When you want to start a new search, you must specify --new command.
-  --c, -t, -s are only valid when you use --new.
+- Additional Info
+  - The program will save all search results to results.json.
+  - When a search is interrupted, it can be continued when you run the program again without --new command.
+  - When you want to start a new search, you must specify --new command.
+  - -c, -t, -s are only valid when you use --new.
 
