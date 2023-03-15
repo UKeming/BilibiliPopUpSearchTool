@@ -4,7 +4,11 @@
 
 
 ## Usage - 使用
-### 文件结构:
+  - File Structure - 文件结构说明
+    - keywords.txt
+    - thread_tracker.json
+    - results.json
+    - search.py
 
 
 
