@@ -88,10 +88,12 @@ def get_data(i):
                                     contents[id] = {
                                         "content": string,
                                         "time": time,
-                                        "link": link
                                     }
                                     id += 1
                         if len(contents.items()) > 0:
+                            result_dict['link'] = link
+                            new_result['link'] = link
+
                             result_dict[aid[i]] = contents
                             new_result[aid[i]] = contents
 
@@ -154,7 +156,7 @@ def bvid_to_cid(bvid, i):
             data = dictory["data"][0]
             return data["cid"]
     except:
-        print('Exception on bvid_to_cid at: ' + str(i + 1))
+        return
 
 
 def create_thread_file(thread_count, total_data, start_point):
