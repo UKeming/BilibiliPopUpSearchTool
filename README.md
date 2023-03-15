@@ -11,7 +11,7 @@ pip install requests
 ```
 to install dependencies.
 
-Then, create a *keywords.txt* file and add the keywords you want to search for.
+Then, create a *keywords.txt* file and add the keywords you want to search for. You should separate the keyword by line.
 
 Finally, run
 ```
