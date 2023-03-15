@@ -12,9 +12,9 @@ Then, create a *keywords.txt* file and add the keywords you want to search for.
 
 Finally, run
 ```
-python ./search.py
+python ./search.py --new
 ```
-command to start the search
+command to start a new search
 
 ## Parameters
 If you don't specify any parameters, the program will create 10 threads for searching, and search from videos from aid 0-1000000
