@@ -29,6 +29,6 @@ If you don't specify any parameters, the program will create 10 threads for sear
 - Additional Info
   - The program will save all search results to results.json.
   - When a search is interrupted, it can be continued when you run the program again without --new command.
-  - When you want to start a new search, you must specify --new command.
+  - If you want to start a new search, you must specify --new command.
   - -c, -t, -s are only valid when you use --new.
 
