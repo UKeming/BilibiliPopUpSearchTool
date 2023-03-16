@@ -3,6 +3,7 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import argparse
 import random
+import sys
 import threading
 import time
 from optparse import OptionParser
@@ -20,11 +21,11 @@ goal = []
 start = []
 threads = []
 result_dict = {}
+new_result = {}
 headers = {
     "cookie": "finger=-1260391586; _uuid=D51E6955-C238-C370-8571-73991591A3BA78608infoc; buvid3=D854CAA6-8795-4B65-82C3-F6617B20F17058502infoc; CURRENT_FNVAL=80; blackside_state=1; rpdid=|(JYYRlYRRJl0J'uY|~|RYumJ; sid=isi80p88; PVID=13; bsource=search_baidu; bfe_id=f027475b111b8c2b686328c826e4e281",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
 }
-new_result = {}
 
 thread_file_path = "./thread_tracker.json"
 result_file_path = "./results.json"
@@ -104,10 +105,7 @@ def get_data(i):
 
 def save_progress():
     while True:
-        time.sleep(10)
-
-        [print(value) for (key, value) in new_result.items()]
-        new_result.clear()
+        time.sleep(3)
 
         thread_dict = {'block_size': block_size}
 
@@ -125,10 +123,10 @@ def save_progress():
         with open(result_file_path, "w", encoding='utf-8') as f:
             f.write(json.dumps(result_dict, ensure_ascii=False, indent=4))
 
-        cls()
-
         if print_progress() >= 100:
             break
+
+    [print(value) for (key, value) in new_result.items()]
 
 
 # Press the green button in the gutter to run the script.
@@ -239,26 +237,44 @@ def main():
     threads[len(aid)].start()
 
 
-def cls():
-    print('\n' * 100)
+def move_cursor_up(lines=1):
+    sys.stdout.write(f"\033[{lines}A")
+
+
+def move_cursor_down(lines=1):
+    sys.stdout.write(f"\033[{lines}B")
+
+
+def move_cursor_to_line_start():
+    sys.stdout.write("\r")
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def print_progress():
+    clear_screen()
     for i in range(len(aid)):
-        print("thread", i, end=": |")
-        progress = int(((aid[i] - start[i]) / block_size) * 100)
-        for j in range(progress):
-            print("-", end="")
-        for j in range(100 - progress):
-            print(" ", end="")
+        sys.stdout.write("thread {0}: [".format(i + 1))
+        progress = int(((aid[i] - start[i] - 1) / block_size) * 100)
+        for j in range(progress - 1):
+            sys.stdout.write("-")
+        sys.stdout.write(">")
 
-        print("|", progress, "%", end=" ")
-        print(aid[i] - 1, "/", goal[i], end=", ")
-        print("miss rate:", "null" if total[i] == 0 else fail[i] / total[i])
+        for j in range(100 - progress):
+            sys.stdout.write(" ")
+
+        sys.stdout.write("] {0}%, ".format(progress))
+        sys.stdout.write("{0}/{1}, ".format(aid[i] - 1, goal[i]))
+        sys.stdout.write("miss rate:{0}% \n".format("null" if total[i] == 0 else (fail[i] / total[i]) * 100))
 
     sum_aid = sum([aid[i] - 1 - start[i] for i in range(len(aid))])
     overall_progress = (sum_aid / (block_size * len(aid))) * 100
-    print("overall:", overall_progress, "%")
+    sys.stdout.write("overall: {0}% \n".format(overall_progress))
+
+    sys.stdout.flush()
+
     return overall_progress
 
 
