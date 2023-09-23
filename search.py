@@ -40,7 +40,7 @@ xor = 177451812
 add = 8728348608
 block_size = 0
 keyword_list = []
-
+aaa
 
 def av2bv(x):
     x = (x ^ xor) + add
